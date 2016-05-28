@@ -28,7 +28,7 @@ Sí investigamos un poco más nos podemos dar cuenta que la imagen solo tiene 6G
         
 ### 3.- Vamos a tener que cambiar el tamaño de la imagen para tener un poco más de espacio para los laboratorios posteriores.
 
-La herramienta virt-resize permite cambiar el tamaño de la partición y el sistema de archivos al mismo tiempo, pero no funciona sobre la imagen original, por lo que es necesario crear una nueva imagen base:
+La herramienta virt-resize permite cambiar el tamaño de la partición y el sistema de archivos al mismo tiempo, pero nosotros crearemos un HD sobre el que después realizaremos el re-sizing:
 
         [root@localhost images]# qemu-img create -f qcow2 OSP82.qcow2 100G
         Formatting 'OSP82.qcow2', fmt=qcow2 size=107374182400 encryption=off cluster_size=65536 lazy_refcounts=off refcount_bits=16
@@ -83,9 +83,9 @@ Validamos los cambios el el filesystem:
         /dev/sda1  partition   -    -      83   100G  /dev/sda
         /dev/sda   device      -    -      -    100G  -
 
-### 6 .- A continuación, vamos a eliminar la cloud-init desde guest-image; no vamos a necesitar este servicio,
+### 6 .- A continuación, vamos a eliminar la cloud-init desde guest-image.
 
-ya que no estamos usando esta máquina dentro de un entorno que admite un servicio de metadatos, además de que también se ralentiza considerablemente el proceso de arranque:
+No vamos a necesitar este servicio, ya que no estamos usando esta máquina dentro de un entorno que admite un servicio de metadatos, además de que también se ralentiza considerablemente el proceso de arranque:
 
         [root@localhost images]# virt-customize -a OSP81.qcow2  --run-command 'yum remove cloud-init* -y'
         [   0.0] Examining the guest ...
@@ -96,7 +96,7 @@ ya que no estamos usando esta máquina dentro de un entorno que admite un servic
 
 ### 7.- Ahora procederemos a cambiar el password default del usuario root:
 
-        [root@localhost images]# virt-customize -a OSP81.qcow2 --root-password password:redhat2016
+        [root@localhost images]# virt-customize -a OSP81.qcow2 --root-password password:osp81
         [   0.0] Examining the guest ...
         [  12.7] Setting a random seed
         [  12.7] Setting passwords
@@ -106,11 +106,13 @@ ya que no estamos usando esta máquina dentro de un entorno que admite un servic
 
 por lo que crearemos un archivo de configuración para la interfaz para eth1 basado en la eth0:
 
-        [root@localhost images]# virt-customize -a OSP82.qcow2 --run-command 'cp /etc/sysconfig/network-scripts/ifcfg-eth{0,1} && sed -i s/DEVICE=.*/DEVICE=eth1/g /etc/sysconfig/network-scripts/ifcfg-eth1'
+        [root@localhost images]# virt-customize -a OSP81.qcow1 --run-command 'cp /etc/sysconfig/network-scripts/ifcfg-eth{0,1} && sed -i s/DEVICE=.*/DEVICE=eth1/g /etc/sysconfig/network-scripts/ifcfg-eth1'
         [   0.0] Examining the guest ...
         [  11.9] Setting a random seed
         [  11.9] Running: cp /etc/sysconfig/network-scripts/ifcfg-eth{0,1} && sed -i s/DEVICE=.*/DEVICE=eth1/g /etc/sysconfig/network-scripts/ifcfg-eth1
         [  12.1] Finishing off
+        
+Tendremos que repetir desde el paso 5-9 para la segunda imagen de nuestro lab. 
 
 ### 9.- Procederemos a crear nuestra vm en KVM con la imagen OSP81.qcow2 que acabamos de crear.
 
