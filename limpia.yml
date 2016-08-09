@@ -4,5 +4,5 @@
     - name: Hello Message
       debug:
        msg: "Hello World!"
-    -name: Asignando Nombre
+    - name: Asignando Nombre
       - hostname: name=limpio.limpio.com
