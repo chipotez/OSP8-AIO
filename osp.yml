@@ -1,4 +1,5 @@
 - name: Hello World Sample
+  hosts: OSP-Nodes
   tasks:
     - name: Hello Message
       debug:
