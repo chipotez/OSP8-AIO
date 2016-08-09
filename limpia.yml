@@ -1,3 +1,4 @@
+  -
   hosts: "192.168.122.13"
   name: "Hello World Sample"
   tasks: 
