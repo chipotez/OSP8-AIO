@@ -1,8 +1,14 @@
-- name: Hello World Sample
-  hosts: 192.168.122.13
-  tasks:
-    - name: Hello Message
-      debug:
-       msg: "Hello World!"
-    - name: Asignando Nombre
+  hosts: "192.168.122.13"
+  name: "Hello World Sample"
+  tasks: 
+    - 
+      debug: 
+        msg: "Hello World!"
+      name: "Hello Message"
+    - 
       hostname: name=limpio.limpio.com
+      name: "Asignando Nombre"
+    - 
+      name: "Borrando registro"
+      redhat_subscription: "state='absent' username=m.pineda password='redhat2016!.-' autosubscribe=true"
+
