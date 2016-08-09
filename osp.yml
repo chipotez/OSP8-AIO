@@ -1,0 +1,8 @@
+- name: Hello World Sample
+  hosts: 192.168.122.12
+  tasks:
+    - name: Hello Message
+      debug:
+       msg: "Hello World!"
+    - name: install the latest version of Apache
+      yum: name=httpd state=latest
