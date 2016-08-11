@@ -5,7 +5,8 @@
       debug:
        msg: "Hello World!"
     - hostname: name=controller.sabe.com
-    - redhat_subscription: state='present' username=tu-user password='tupassword' pool='^(Red Hat Enterprise Server|Red Hat Virtualization|Red Hat OpenStack|Red Hat Ceph Storage OSD|Red Hat OpenShift Enterprise Infrastructure)$'
+    - redhat_subscription: state='present' username=tu-user password='tupassword' 
+    - command: /usr/bin/subscription-manager attach --pool=8a85f98a5611056201564a9cfe6a6341
     - command: /usr/bin/subscription-manager repos --disable=* --enable=rhel-7-server-rpms --enable=rhel-7-server-openstack-9-rpms --enable=rhel-7-server-rh-common-rpms
     - name: upgrade all packages
       yum: name=* state=latest
