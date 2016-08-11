@@ -5,8 +5,10 @@
       debug:
        msg: "Hello World!"
     - hostname: name=controller.sabe.com
+    - command: theIPaddress=$(ip addr show eth0 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1)
     - redhat_subscription: state='present' username=tu-user password='tupassword' 
     - command: /usr/bin/subscription-manager attach --pool=8a85f98a5611056201564a9cfe6a6341
     - command: /usr/bin/subscription-manager repos --disable=* --enable=rhel-7-server-rpms --enable=rhel-7-server-openstack-9-rpms --enable=rhel-7-server-rh-common-rpms
     - name: upgrade all packages
       yum: name=* state=latest
+      yum: name=openstack-packstack state=latest
