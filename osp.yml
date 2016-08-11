@@ -5,6 +5,6 @@
       debug:
        msg: "Hello World!"
     - hostname: name=controller.sabe.com
-    - redhat_subscription: state='present' username=m.pineda password='redhat2016!.-' autosubscribe=true
+    - redhat_subscription: state='present' username=tu-user password='tupassword' autosubscribe=true
     - name: upgrade all packages
       yum: name=* state=latest
